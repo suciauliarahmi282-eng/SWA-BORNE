@@ -297,8 +297,7 @@ footer{padding:36px 0 48px;color:var(--ink-soft);font-size:.9rem}
   <header><h2>Komponen dan biaya</h2><p>Harga dari catatan pembelian tim, tanpa ongkos kirim.</p></header>
   <div class="body">
     <div class="totals">
-      <div class="total"><div class="v" id="t-final"></div><div class="l">Biaya prototipe final (barang yang dipakai)</div></div>
-      <div class="total"><div class="v" id="t-all"></div><div class="l">Total pengeluaran keseluruhan, termasuk yang tidak dipakai</div></div>
+      <div class="total"><div class="v" id="t-final"></div><div class="l">Biaya prototipe final</div></div>
     </div>
     <div class="filters" role="group" aria-label="Filter kategori" id="filters"></div>
     <div class="scroll"><table id="bom">
@@ -306,12 +305,12 @@ footer{padding:36px 0 48px;color:var(--ink-soft);font-size:.9rem}
       <tbody></tbody>
       <tfoot><tr><td colspan="5">Jumlah baris yang tampil</td><td class="num" id="t-shown"></td></tr></tfoot>
     </table></div>
-    <noscript><p>Tabel ini memerlukan JavaScript. Total biaya prototipe final Rp 872.500; total pengeluaran keseluruhan Rp 1.039.000.</p></noscript>
+    <noscript><p>Tabel ini memerlukan JavaScript. Total biaya prototipe final Rp 872.500.</p></noscript>
     <h3>Rincian per kategori (prototipe final)</h3>
     <div class="scroll"><table id="cat">
       <thead><tr><th>Kategori</th><th class="num">Biaya</th></tr></thead><tbody></tbody>
     </table></div>
-    <p style="margin-top:14px">Total pengeluaran keseluruhan sudah termasuk barang yang dibeli tetapi tidak dipakai (baris redup di tabel). Semua harga tanpa ongkos kirim.</p>
+    <p style="margin-top:14px">Semua harga tanpa ongkos kirim.</p>
   </div>
 </div></section>
 
@@ -538,14 +537,7 @@ footer{padding:36px 0 48px;color:var(--ink-soft);font-size:.9rem}
     [P,'Obeng 21 in 1','-','Sumbawa Official Store','1',15000,15000,1],
     [P,'Pasta solder','Lotfet 10 g',N,'1',9000,9000,1],
     [P,'Solder adjustable 200 sampai 450 °C','220 V, 60 W (tipe 806)','Taffware Official Store','1',47000,47000,1],
-    [L,'Lain-lain (tambahan)','-',N,'-',35000,35000,1],
-    [X,'Modul pengisi baterai TP4056','USB Type-C, 18650 + proteksi','Mirorim1','5',3000,15000,0],
-    [X,'Baterai 18650','Panasonic NCR/CGR, 2250 sampai 2550 mAh','Kiki Pratama Computer','2',17000,34000,0],
-    [X,'ADS1115','16-bit I2C ADC 4 kanal','Tembalang Instruments','1',25000,25000,0],
-    [X,'ESP32 + kabel micro','-',N,'1',76000,76000,0],
-    [X,'MT3608 step-up','2 A, 2 sampai 24 V ke 5 sampai 28 V',N,'1',11000,11000,0],
-    [X,'Soket baterai','-',N,'1',3500,3500,0],
-    [X,'Buzzer aktif','5 V',N,'1',2000,2000,0]
+    [L,'Lain-lain (tambahan)','-',N,'-',35000,35000,1]
   ];
   var rp=function(n){return 'Rp '+n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')};
   var finalSum=0,allSum=0,byCat={},cats=[];
@@ -553,7 +545,7 @@ footer{padding:36px 0 48px;color:var(--ink-soft);font-size:.9rem}
     allSum+=r[6]; if(r[7]){finalSum+=r[6]; byCat[r[0]]=(byCat[r[0]]||0)+r[6]}
     if(cats.indexOf(r[0])<0)cats.push(r[0]);
   });
-  $('t-final').textContent=rp(finalSum); $('t-all').textContent=rp(allSum);
+  $('t-final').textContent=rp(finalSum);
   var tb=document.querySelector('#bom tbody'), current='Semua';
   function draw(){
     var shown=0, html='';
