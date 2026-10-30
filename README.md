@@ -19,6 +19,7 @@ Alat ini bukan pengganti uji laboratorium dan bukan jaminan air aman dikonsumsi.
 |---|---|
 | `index.html` | Halaman dokumentasi proyek (satu berkas, tanpa proses *build*) |
 | `dokumen/SWA-BORNE_UTS_PSB22_versi2.pptx` | Slide UTS PSB II |
+| `assets/img/prototipe.jpg` | Foto prototipe (dokumentasi visual) |
 | `.nojekyll` | Supaya GitHub Pages menyajikan berkas apa adanya |
 
 Kode Arduino (`.ino`) akan ditambahkan setelah perbaikan kode selesai.
