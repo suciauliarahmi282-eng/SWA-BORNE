@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SWA-BORNE | Alat Skrining Awal Kelayakan Air</title>
+  <meta name="description" content="SWA-BORNE (Smart Water-Borne Disease Risk Detector): alat skrining awal kelayakan air berdasarkan pH, TDS, dan kekeruhan terhadap Permenkes No. 2 Tahun 2023. Proyek Perancangan Sistem Biomedis 2, Teknik Biomedis ITERA.">
+  <meta name="author" content="Rendi Prayoga, Suci Aulia Rahmi">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip" href="#isi">Langsung ke isi</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">SWA-BORNE</a>
+    <nav aria-label="Navigasi halaman">
+      <ul>
+        <li><a class="l" href="#tentang">Tentang</a></li>
+        <li><a class="l" href="#simulator">Aturan keputusan</a></li>
+        <li><a class="l" href="#cara-kerja">Cara kerja</a></li>
+        <li><a class="l" href="#rangkaian">Rangkaian</a></li>
+        <li><a class="l" href="#komponen">Komponen dan biaya</a></li>
+        <li><a class="l" href="#sensor">Sensor</a></li>
+        <li><a class="l" href="#kalibrasi">Kalibrasi</a></li>
+        <li><a class="l" href="#pengujian">Pengujian</a></li>
+        <li><a class="l" href="#kondisi">Kondisi prototipe</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="isi">
+<div class="hero" id="top">
+  <div class="wrap">
+    <p class="status-chip">Draf mengikuti Lembar Acuan Tunggal v0.2, 29 Oktober 2026</p>
+    <h1>SWA<span>-</span>BORNE</h1>
+    <p class="lede">Alat skrining awal kelayakan air. Tiga parameter diukur, pH, TDS, dan kekeruhan, lalu dibandingkan dengan baku mutu Permenkes No. 2 Tahun 2023.</p>
+
+    <div class="strip" role="img" aria-label="Skala pH 0 sampai 14 dengan rentang yang memenuhi baku mutu, 6,5 sampai 8,5, ditandai">
+      <div class="strip-bar">
+        <div class="strip-window"><b>pH 6,5 – 8,5 memenuhi</b></div>
+      </div>
+      <div class="strip-scale" aria-hidden="true"><span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span><span>12</span><span>14</span></div>
+    </div>
+    <p class="strip-note">Warna pita hanya ilustrasi skala pH. Sensor pada alat membaca tegangan, bukan warna.</p>
+
+    <p class="disclaimer"><strong>Batas penggunaan.</strong> SWA-BORNE bukan pengganti uji laboratorium dan bukan jaminan air aman dikonsumsi. Risiko penyakit seperti diare dan dermatitis hanya menjadi latar belakang masalah, bukan keluaran alat.</p>
+  </div>
+</div>
+
+<section class="sec" id="tentang">
+  <div class="wrap">
+    <h2>Tentang proyek</h2>
+    <p>SWA-BORNE adalah prototipe mahasiswa Teknik Biomedis ITERA untuk mata kuliah Perancangan Sistem Biomedis 2 (PSB II). Alat ini mengukur tiga parameter fisik-kimia air, lalu memberi satu dari dua keluaran: <strong>LAYAK</strong> atau <strong>TIDAK LAYAK</strong>. Hasilnya tampil di layar OLED dan <em>Serial Monitor</em>.</p>
+    <p>LED merah menyala sebagai penanda tambahan, hanya saat hasilnya TIDAK LAYAK. <span class="tag usulan">USULAN</span></p>
+
+    <h3>Cara membaca hasil</h3>
+    <p>Hasil LAYAK berarti ketiga parameter yang diukur tidak terdeteksi melampaui batas. Hasil itu tidak mencakup E. coli, total koliform, warna, bau, suhu, nitrat, nitrit, besi, mangan, Cr⁶⁺, dan parameter wajib Permenkes lainnya, karena alat memang tidak mengukurnya.</p>
+
+    <div class="quote">
+      <p><strong>Pernyataan baku untuk semua dokumen proyek</strong> <span class="tag usulan">USULAN</span></p>
+      <p style="margin-bottom:0">SWA-BORNE merupakan alat skrining awal. Hasil LAYAK berarti ketiga parameter yang diukur (pH, TDS, kekeruhan) tidak terdeteksi melampaui batas Permenkes No. 2 Tahun 2023 menurut sensor yang digunakan, dan bukan jaminan kualitas air secara menyeluruh. Parameter mikrobiologi dan kimia lain tidak diukur. Untuk kepastian diperlukan uji laboratorium.</p>
+    </div>
+    <p><strong>Tentang LED.</strong> LED merah hanya menandai kondisi TIDAK LAYAK. Ketiadaan nyala LED tidak boleh dianggap LAYAK. Status LAYAK hanya dinyatakan oleh teks pada OLED dan <em>Serial Monitor</em>. <span class="tag usulan">USULAN</span></p>
+
+    <h3>Baku mutu acuan <span class="tag kunci">TERKUNCI</span></h3>
+    <p>Sumber: Permenkes No. 2 Tahun 2023, Lampiran, Tabel 1 (air minum) dan Tabel 3 (air untuk keperluan higiene dan sanitasi). Nilai ketiga parameter sama di kedua tabel. LAYAK hanya jika ketiganya memenuhi.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Parameter</th><th>Kadar maksimum yang diperbolehkan</th><th>Aturan keputusan</th></tr></thead>
+        <tbody>
+          <tr><td>pH</td><td>6,5 – 8,5</td><td class="mono">memenuhi jika 6,5 ≤ pH ≤ 8,5</td></tr>
+          <tr><td>TDS</td><td>&lt; 300 mg/L</td><td>memenuhi jika TDS &lt; 300 (300 sudah tidak memenuhi)</td></tr>
+          <tr><td>Kekeruhan</td><td>&lt; 3 NTU</td><td>memenuhi jika &lt; 3 NTU (3 sudah tidak memenuhi)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:1rem"><strong>Catatan sumber.</strong> Berkas yang dipegang tim berjudul "Rancangan" (unduhan JDIH, Februari 2023). Nilainya cocok dengan sumber sekunder, tetapi sitasi final harus memakai versi yang diundangkan dan angkanya dicek ulang. <span class="tag nanti">ISI NANTI</span></p>
+  </div>
+</section>
+
+<section class="sec alt" id="simulator">
+  <div class="wrap">
+    <h2>Aturan keputusan, bisa dicoba</h2>
+    <p class="wide" style="max-width:var(--measure)">Geser nilai di bawah untuk melihat bagaimana aturan LAYAK / TIDAK LAYAK bekerja. Ini simulasi aturan, bukan pembacaan sensor. Nilainya tidak berasal dari alat.</p>
+
+    <div class="sim">
+      <div class="panel">
+        <div class="field">
+          <label for="in-ph">pH <output id="out-ph" for="in-ph">7,0</output></label>
+          <input id="in-ph" type="range" min="0" max="14" step="0.1" value="7">
+          <small>Memenuhi: 6,5 sampai 8,5</small>
+        </div>
+        <div class="field">
+          <label for="in-tds">TDS (mg/L) <output id="out-tds" for="in-tds">150</output></label>
+          <input id="in-tds" type="range" min="0" max="1000" step="5" value="150">
+          <small>Memenuhi: kurang dari 300. Rentang sensor 0–1000 ppm.</small>
+        </div>
+        <div class="field">
+          <label for="in-ntu">Kekeruhan (NTU) <output id="out-ntu" for="in-ntu">1,0</output></label>
+          <input id="in-ntu" type="range" min="0" max="100" step="0.5" value="1">
+          <small>Memenuhi: kurang dari 3 NTU.</small>
+        </div>
+      </div>
+
+      <div class="panel" aria-live="polite">
+        <div class="oled" id="oled" aria-label="Tampilan OLED simulasi"></div>
+        <div class="led-row"><span class="led" id="led" aria-hidden="true"></span><span id="led-label">LED merah mati</span></div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+    </div>
+    <p class="sim-foot">Peringatan ketidakpastian di atas dihitung dari spesifikasi listing toko (alkali error pH 0,2; TDS 10% <em>full scale</em> atau ± 100 ppm; kekeruhan ± 30 NTU). Itu klaim penjual, bukan hasil uji tim.</p>
+  </div>
+</section>
+
+<section class="sec" id="cara-kerja">
+  <div class="wrap">
+    <h2>Cara kerja prototipe</h2>
+    <p>Alat punya tiga mode. Setiap kali tombol di pin D2 ditekan, mode berpindah berurutan.</p>
+    <div class="modes">
+      <div class="mode"><span class="m">Mode 0</span><h3><em>Standby</em></h3><p>OLED menampilkan "STANDBY / TEKAN BUTTON". LED mati.</p></div>
+      <div class="mode"><span class="m">Mode 1</span><h3><em>Baseline</em></h3><p>Mengambil 20 sampel sensor, lalu menghitung dan menampilkan nilai pH, TDS, dan NTU sebagai nilai dasar di OLED dan Serial.</p></div>
+      <div class="mode"><span class="m">Mode 2</span><h3><em>Monitoring</em></h3><p>Tiap 1 detik membaca ketiga sensor, menghitung nilai, menentukan LAYAK atau TIDAK LAYAK, menampilkannya, dan menyalakan LED merah bila TIDAK LAYAK.</p></div>
+    </div>
+    <p class="cycle">Standby → Baseline → Monitoring → Standby</p>
+    <p>Kalibrasi dilakukan lewat <em>Serial Monitor</em> dengan perintah teks (lihat bagian kalibrasi). Hasilnya disimpan di EEPROM, jadi tidak hilang saat alat dimatikan.</p>
+    <p>Alat tidak punya WiFi, <em>dashboard</em>, atau baterai. Daya 5 V datang dari laptop lewat USB, sehingga laptop harus tersambung saat alat dipakai.</p>
+  </div>
+</section>
+
+<section class="sec alt" id="rangkaian">
+  <div class="wrap">
+    <h2>Rangkaian dan pemetaan pin <span class="tag kunci">TERKUNCI</span></h2>
+    <p>Dipetakan dari kode Arduino IDE. Pembacaan memakai ADC internal Arduino Uno 10-bit (0–1023, referensi 5 V), bukan ADS1115 16-bit seperti di dokumen semester 6.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 760 330" role="img" aria-label="Diagram blok: tiga sensor ke pin A0, A1, A2 Arduino Uno; tombol ke D2; Arduino ke OLED lewat I2C dan LED merah di D8; daya dan Serial Monitor lewat USB laptop">
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#3d5461"/></marker></defs>
+        <g stroke="#3d5461" stroke-width="1.6" fill="none" marker-end="url(#ar)">
+          <path d="M190 55 H300"/><path d="M190 145 H300"/><path d="M190 235 H300"/>
+          <path d="M190 305 H250 V270 H300"/>
+          <path d="M460 70 H560"/><path d="M460 140 H560"/>
+          <path d="M610 215 V270 H460"/>
+        </g>
+        <g fill="#fff" stroke="#10242f" stroke-width="1.6">
+          <rect x="30" y="30" width="160" height="50" rx="6"/><rect x="30" y="120" width="160" height="50" rx="6"/><rect x="30" y="210" width="160" height="50" rx="6"/><rect x="30" y="285" width="160" height="40" rx="6"/>
+          <rect x="300" y="30" width="160" height="270" rx="10" fill="#eef3f4"/>
+          <rect x="560" y="40" width="170" height="60" rx="6"/><rect x="560" y="115" width="170" height="50" rx="6"/><rect x="530" y="215" width="200" height="60" rx="6"/>
+        </g>
+        <g text-anchor="middle">
+          <text x="110" y="52" font-weight="600">Sensor pH</text><text x="110" y="70" class="sm">modul pH4502C</text>
+          <text x="110" y="142" font-weight="600">Sensor TDS</text><text x="110" y="160" class="sm">TDS Sensor Meter V1.0</text>
+          <text x="110" y="232" font-weight="600">Sensor kekeruhan</text><text x="110" y="250" class="sm">Turbidity Sensor Module</text>
+          <text x="110" y="310" font-weight="600">Tombol mode</text>
+          <text x="380" y="160" font-weight="700" font-size="18">Arduino Uno R3</text>
+          <text x="380" y="182" class="sm">ADC 10-bit, EEPROM</text>
+          <text x="645" y="64" font-weight="600">OLED SSD1306</text><text x="645" y="84" class="sm">128 × 64, I2C 0x3C</text>
+          <text x="645" y="136" font-weight="600">LED merah</text><text x="645" y="154" class="sm">menyala = TIDAK LAYAK</text>
+          <text x="630" y="240" font-weight="600">USB dari laptop</text><text x="630" y="258" class="sm">daya 5 V + Serial Monitor</text>
+        </g>
+        <g class="mono" text-anchor="middle">
+          <text x="245" y="47">A0</text><text x="245" y="137">A1</text><text x="245" y="227">A2</text><text x="275" y="262">D2</text>
+          <text x="510" y="62">A4, A5</text><text x="510" y="132">D8</text>
+        </g>
+      </svg>
+    </div>
+
+    <h3>Tabel pin</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Fungsi</th><th>Pin / antarmuka</th><th>Catatan</th></tr></thead>
+        <tbody>
+          <tr><td>Sensor pH</td><td class="mono">A0</td><td>ADC bawaan Uno 10-bit (0–1023), referensi 5 V</td></tr>
+          <tr><td>Sensor TDS</td><td class="mono">A1</td><td>ADC 10-bit</td></tr>
+          <tr><td>Sensor kekeruhan</td><td class="mono">A2</td><td>ADC 10-bit</td></tr>
+          <tr><td>Tombol mode</td><td class="mono">D2</td><td><code>INPUT_PULLUP</code>, aktif LOW, <em>debounce</em> 50 ms; <em>push button</em> 2 pin</td></tr>
+          <tr><td>LED merah (penanda TIDAK LAYAK)</td><td class="mono">D8</td><td>Menyala saat TIDAK LAYAK; mati saat LAYAK, <em>standby</em>, atau <em>baseline</em>; resistor 100 kΩ</td></tr>
+          <tr><td>OLED SSD1306 128 × 64</td><td class="mono">I2C (SDA A4, SCL A5), alamat 0x3C</td><td>Pustaka Adafruit_GFX dan Adafruit_SSD1306</td></tr>
+          <tr><td>Serial Monitor</td><td class="mono">9600 baud</td><td>Tampilan hasil dan perintah kalibrasi</td></tr>
+          <tr><td>Penyimpanan kalibrasi</td><td class="mono">EEPROM</td><td>Penanda 0xAB di alamat 0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="komponen">
+  <div class="wrap">
+    <h2>Komponen dan biaya <span class="tag kunci">TERKUNCI</span></h2>
+    <p>Harga diambil dari catatan pembelian tim. Tidak ada ongkos kirim karena pembelian online rata-rata gratis ongkir. Barang yang dibeli tetapi tidak dipakai tetap dicatat, supaya total prototipe final tidak tercampur dengan pengeluaran lain maupun RAB semester 6 (Rp 1.155.000).</p>
+
+    <dl class="cost-sum" id="cost-sum"></dl>
+
+    <div class="toolbar" role="group" aria-label="Filter tabel komponen">
+      <button type="button" data-f="final" aria-pressed="true">Dipakai di prototipe final</button>
+      <button type="button" data-f="tidak" aria-pressed="false">Dibeli, tidak dipakai</button>
+      <button type="button" data-f="semua" aria-pressed="false">Semua</button>
+    </div>
+
+    <div class="tbl">
+      <table>
+        <thead><tr><th class="num">No</th><th>Kategori</th><th>Komponen</th><th>Tipe / kode</th><th>Toko</th><th>Jumlah</th><th class="num">Harga satuan (Rp)</th><th class="num">Subtotal (Rp)</th></tr></thead>
+        <tbody id="komponen-body"></tbody>
+        <tfoot id="komponen-foot"></tfoot>
+      </table>
+    </div>
+
+    <h3>Rincian biaya prototipe final per kategori</h3>
+    <div class="tbl" style="max-width:520px">
+      <table><tbody id="kategori-body"></tbody></table>
+    </div>
+
+    <h3>Tidak ada di alat <span class="tag kunci">TERKUNCI</span></h3>
+    <p>LED hijau, buzzer, baterai 18650, TP4056, MT3608, ESP32, ADS1115, sensor suhu, WiFi/Blynk, termometer, multimeter, TDS meter pembanding, dan gelas beker.</p>
+  </div>
+</section>
+
+<section class="sec alt" id="sensor">
+  <div class="wrap">
+    <h2>Spesifikasi sensor dan keterbatasannya <span class="tag kunci">TERKUNCI</span></h2>
+    <p>Angka di bawah berasal dari deskripsi listing toko (Shopee), dilihat 29 Oktober 2026. Ini klaim penjual, bukan hasil uji tim.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Sensor</th><th>Spesifikasi dari listing</th></tr></thead>
+        <tbody>
+          <tr><td>Modul pH-4502C + elektrode</td><td>Rentang 0–14 pH; <em>zero-point</em> 7 ± 0,5 pH; alkali error 0,2 pH; kemiringan teoretis ≥ 98,5%; respons elektrode ≤ 1 menit, <em>settling</em> 60 detik; modul 5 V, 5–10 mA; suhu kerja elektrode 0–60 °C; keluaran analog (pin PO); konektor BNC, kabel ± 70 cm</td></tr>
+          <tr><td>TDS Sensor Meter V1.0</td><td>Rentang 0–1000 ppm; akurasi 10% <em>full scale</em> pada 25 °C; masukan 3,3–5,5 V; keluaran 0–2,3 V; 3–6 mA; probe 2 elektrode, kabel 83 cm; probe tidak untuk air &gt; 55 °C; probe tidak boleh dekat tepi wadah; konektor dan papan adapter tidak tahan air</td></tr>
+          <tr><td>Turbidity Sensor Module</td><td>Rentang 0–1000 NTU ± 30; 5 V, maks 40 mA; keluaran analog 0–4,5 V (juga keluaran digital dengan potensiometer ambang); respons &lt; 500 ms; LED inframerah 940 nm, fototransistor 880 nm</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Keterbatasan terhadap ambang Permenkes</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Parameter</th><th>Ambang</th><th>Ketidakpastian sensor</th><th>Dampak</th></tr></thead>
+        <tbody>
+          <tr><td>pH</td><td>6,5 – 8,5</td><td>alkali error 0,2 pH</td><td>Relatif memadai</td></tr>
+          <tr><td>TDS</td><td>&lt; 300 mg/L</td><td>10% F.S. = ± 100 ppm</td><td>Tidak bisa membedakan dengan pasti di sekitar ambang</td></tr>
+          <tr><td>Kekeruhan</td><td>&lt; 3 NTU</td><td>± 30 NTU</td><td>Tidak bisa memastikan air di bawah 3 NTU; hanya mendeteksi keruh yang jelas</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:1rem">Larutan kalibrasi TDS 1382 ppm berada di luar rentang sensor (maksimum 1000 ppm).</p>
+  </div>
+</section>
+
+<section class="sec" id="kalibrasi">
+  <div class="wrap">
+    <h2>Metode kalibrasi</h2>
+    <p>Kondisi saat ini: tidak ada termometer, sehingga suhu diasumsikan 25 °C. Wadah kalibrasi masih gelas air mineral kemasan. Probe TDS tidak boleh dekat tepi wadah, jadi perlu wadah yang lebih lebar.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Sensor</th><th>Bahan</th><th>Metode</th><th>Catatan</th></tr></thead>
+        <tbody>
+          <tr><td>pH</td><td>Buffer 4,0 dan 6,86</td><td>Dua titik, perintah <code>PH4</code> dan <code>PH7</code></td><td>Kode memakai nilai 7,0 untuk titik kedua padahal buffer 6,86 (lihat K2)</td></tr>
+          <tr><td>TDS</td><td>Larutan 1382 ppm (25 °C)</td><td>Satu titik, perintah <code>TDS 1382</code>; faktor K dari nilai referensi dibagi tegangan</td><td>Model garis lurus melalui nol; titik di luar rentang sensor</td></tr>
+          <tr><td>Kekeruhan</td><td>Aquades</td><td>Satu titik nol, perintah <code>NTU</code>; "NTU" = (<em>baseline</em> − pembacaan) × 2,5</td><td>Faktor 2,5 belum dikalibrasi, jadi keluarannya skala relatif, bukan NTU baku</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Daftar revisi kode <span class="tag usulan">USULAN</span></h3>
+    <p>Usulan untuk anggota tim pemegang prototipe. Status: belum diterapkan, menunggu persetujuan.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Kode</th><th>Perbaikan</th><th>Alasan</th></tr></thead>
+        <tbody>
+          <tr><td>K1</td><td>Ganti ambang: pH 6,5–8,5; TDS &lt; 300; kekeruhan &lt; 3. Aturan LAYAK: <code>ph &gt;= 6.5 &amp;&amp; ph &lt;= 8.5 &amp;&amp; tds &lt; 300 &amp;&amp; ntu &lt; 3</code></td><td>Kode lama memakai TDS &gt; 500 dan NTU &gt; 50</td></tr>
+          <tr><td>K2</td><td>Ubah nilai titik kedua di <code>hitungPH</code> dari 7,0 menjadi 6,86 dan ganti nama perintah <code>PH7</code></td><td>Menghilangkan galat sekitar +0,12 pH di batas 6,5 dan +0,22 pH di batas 8,5</td></tr>
+          <tr><td>K3</td><td>Evaluasi kalibrasi TDS di sekitar 300 ppm (misalnya larutan 1382 ppm diencerkan dengan aquades, ± 1 bagian larutan : 3,6 bagian aquades); bila galat besar, pakai kalibrasi multi-titik atau model non-linier</td><td>Ambang 300 ppm jauh dari titik kalibrasi 1382 ppm</td></tr>
+          <tr><td>K4</td><td>Tampilkan keluaran kekeruhan sebagai skala relatif, atau kalibrasi dengan sampel yang diketahui NTU-nya dari laboratorium</td><td>Faktor 2,5 tidak berasal dari kalibrasi</td></tr>
+          <tr><td>K5</td><td>Samakan teks: OLED dan Serial memakai "LAYAK" / "TIDAK LAYAK"</td><td>OLED saat ini "SAFE/DIRTY"</td></tr>
+          <tr><td>K6</td><td>Gunakan rata-rata beberapa sampel (misalnya 20, seperti <em>baseline</em>) di mode <em>Monitoring</em></td><td><em>Monitoring</em> memakai satu pembacaan per detik, sehingga berderau</td></tr>
+          <tr><td>K7</td><td>Pastikan semua titik kalibrasi (pH4, pH686, TDS, NTU) tersimpan sebelum alat dipakai; beri penanda per sensor di EEPROM</td><td>Jika hanya sebagian titik tersimpan, nilai lain dapat tidak valid</td></tr>
+          <tr><td>K8</td><td>Tambahkan jeda stabilisasi (≥ 60 detik) atau indikator "menstabilkan" di OLED</td><td><em>Settling time</em> pH menurut listing 60 detik</td></tr>
+          <tr><td>K9</td><td>Hapus definisi dan penggunaan <code>LED_HIJAU</code> (pin D7); mode <em>Monitoring</em> hanya menyalakan LED merah saat TIDAK LAYAK</td><td>LED hijau sudah tidak ada di alat</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt" id="pengujian">
+  <div class="wrap">
+    <h2>Rencana pengujian <span class="tag usulan">USULAN</span></h2>
+    <p>Angka lulus-gagal ditetapkan setelah uji pendahuluan, lalu dikunci di Lembar Acuan. Prinsipnya: kriteria diturunkan dari bahan kalibrasi yang benar-benar dimiliki, dan tidak melebihi kemampuan sensor menurut spesifikasi.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Pengujian</th><th>Referensi</th><th>Ulangan</th><th>Kriteria awal</th></tr></thead>
+        <tbody>
+          <tr><td>Akurasi pH</td><td>Buffer 4,0 dan 6,86 (titik kalibrasi); satu titik independen (buffer lain atau sampel pembanding) bila tersedia</td><td>≥ 3</td><td>Deviasi rata-rata ≤ ± 0,2 pH</td></tr>
+          <tr><td>Akurasi TDS</td><td>Larutan 1382 ppm, aquades, dan pengenceran di sekitar 300 ppm</td><td>≥ 3</td><td>Deviasi ≤ ± 100 ppm (10% F.S. menurut pabrikan)</td></tr>
+          <tr><td>Respons kekeruhan</td><td>Aquades dan sampel dengan kekeruhan bertingkat</td><td>≥ 3</td><td>Nilai naik konsisten dengan kekeruhan; bila ada, dibandingkan hasil laboratorium</td></tr>
+          <tr><td>Kinerja klasifikasi</td><td>Sampel nyata dibandingkan hasil laboratorium atau pembanding</td><td>≥ 3 per sampel</td><td>Akurasi, sensitivitas, spesifisitas dilaporkan apa adanya</td></tr>
+          <tr><td>Waktu stabil</td><td>Pengukuran dari pencelupan hingga bacaan stabil</td><td>≥ 3</td><td>Dilaporkan hasil ukur (diperkirakan ± 1 menit)</td></tr>
+          <tr><td>Pengulangan (<em>repeatability</em>)</td><td>Sampel yang sama diukur berulang</td><td>≥ 5</td><td>Simpangan baku dilaporkan</td></tr>
+          <tr><td>Uji bocor</td><td>Celup tegak dan miring 30° di batas celup, tisu indikator di dalam</td><td>≥ 3</td><td>Tisu tetap kering; hasil apa adanya</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:1rem">Tidak dilakukan karena komponennya tidak ada: uji <em>noise</em> osiloskop, uji WiFi/Blynk, uji baterai, uji buzzer.</p>
+
+    <h3>Hasil pengujian</h3>
+    <div class="empty">Belum ada data uji. Bagian ini diisi setelah data dari anggota tim pemegang prototipe masuk. <span class="tag nanti">ISI NANTI</span></div>
+  </div>
+</section>
+
+<section class="sec" id="kondisi">
+  <div class="wrap">
+    <h2>Kondisi prototipe saat ini <span class="tag kunci">TERKUNCI</span></h2>
+    <ul class="plain">
+      <li>Elektronik utama (Arduino, <em>breadboard</em>, OLED, LED merah, tombol) berada di box proyek hitam dan ditempelkan ke casing dengan lem tembak. Stiker SWA-BORNE ada di tutup box.</li>
+      <li>Pipa PVC putih berpenutup (dop) abu-abu di kedua ujung berfungsi sebagai rumah probe, direkatkan dengan lem pipa PVC Isarplas. Kabel sensor keluar dari penutup atas. Kedap air tidak diklaim.</li>
+      <li>Papan modul pH berada di luar box dan tidak terlindung. Konektor dan papan adapter TDS juga tidak tahan air.</li>
+      <li>Sambungan masih berupa <em>breadboard</em> dan kabel <em>jumper</em>, belum PCB.</li>
+    </ul>
+
+    <h3>Dokumentasi visual</h3>
+    <div class="empty">Foto casing final (box hitam) belum dipasang. <span class="tag nanti">ISI NANTI</span> Letakkan foto di <code>assets/img/</code>, lalu tambahkan ke bagian ini.</div>
+
+    <h3>Koreksi terhadap dokumen semester 6 <span class="tag kunci">TERKUNCI</span></h3>
+    <p>Beberapa angka di dokumen lama berbeda dengan prototipe yang dibuat. Tabel ini menunjukkan nilai yang berlaku sekarang.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Hal</th><th>Tertulis di dokumen lama</th><th>Nilai baku</th></tr></thead>
+        <tbody>
+          <tr><td>Ambang TDS</td><td>1000 mg/L; 500 ppm; 300 ppm</td><td>&lt; 300 mg/L</td></tr>
+          <tr><td>Ambang kekeruhan</td><td>25 NTU; 5 NTU (poster)</td><td>&lt; 3 NTU</td></tr>
+          <tr><td>Mikrokontroler</td><td>ESP32 / Arduino Nano</td><td>Arduino Uno R3</td></tr>
+          <tr><td>ADC</td><td>ADS1115 16-bit / ADC 12-bit</td><td>ADC internal 10-bit</td></tr>
+          <tr><td>Konektivitas</td><td>WiFi, Blynk, IoT</td><td>Tidak ada; <em>Serial Monitor</em> via laptop</td></tr>
+          <tr><td>Daya</td><td>Baterai 18650, TP4056, MT3608</td><td>USB 5 V dari laptop</td></tr>
+          <tr><td>Peringatan</td><td>Buzzer</td><td>LED merah (TIDAK LAYAK) + OLED</td></tr>
+          <tr><td>Kelas keluaran</td><td>3 atau 4 kelas; "AMAN"</td><td>2 kelas: LAYAK / TIDAK LAYAK</td></tr>
+          <tr><td>Sensor kekeruhan</td><td>DFRobot SEN0189, 0–3000 NTU, ± 0,5 NTU</td><td>Modul generik SEN0175, 0–1000 NTU ± 30</td></tr>
+          <tr><td>Sensor TDS</td><td>DFRobot SEN0244, resolusi ± 10 ppm</td><td>TDS Sensor Meter V1.0 (SEN-0171), 10% F.S.</td></tr>
+          <tr><td>Sensor pH</td><td>Resolusi ± 0,1 pH</td><td>Alkali error 0,2 pH</td></tr>
+          <tr><td>Waktu pengukuran</td><td>&lt; 10 detik</td><td>Sekitar 1 menit (<em>settling</em> pH 60 detik), diukur saat uji</td></tr>
+          <tr><td>Casing</td><td>Pipa 1 inci / 1,5 inci; kotak ABS X4; wadah transparan (poster)</td><td>Pipa PVC AW 1½" + box proyek hitam</td></tr>
+          <tr><td>Penyegel</td><td>Silikon / epoksi</td><td>Lem pipa PVC Isarplas; kedap air tidak diklaim</td></tr>
+          <tr><td>Diagnosis penyakit</td><td>Keluaran "risiko dermatitis / diare"</td><td>Dihapus sebagai keluaran; hanya latar belakang</td></tr>
+          <tr><td><em>Moving average</em></td><td>Dijanjikan</td><td>Hanya ditulis jika K6 diterapkan</td></tr>
+          <tr><td>Anggaran</td><td>Rp 1.155.000 (RAB)</td><td>Biaya prototipe final Rp 872.500; pengeluaran keseluruhan Rp 1.039.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Keputusan dan pertanyaan terbuka</h3>
+    <ul class="plain">
+      <li>Persetujuan nama keluaran LAYAK / TIDAK LAYAK menggantikan "AMAN". <span class="tag usulan">USULAN</span></li>
+      <li>Opsi batas keputusan konservatif di bawah batas Permenkes (misalnya TDS ≈ 200 ppm) untuk mengimbangi ketidakpastian sensor; diputuskan setelah ada data. <span class="tag nanti">ISI NANTI</span></li>
+      <li>Template dan panduan isi BM400 dan BM500 dari dosen. <span class="tag nanti">ISI NANTI</span></li>
+      <li>Data uji dari anggota tim pemegang prototipe. <span class="tag nanti">ISI NANTI</span></li>
+      <li>Foto prototipe di poster diganti dengan casing final (box hitam). <span class="tag nanti">ISI NANTI</span></li>
+      <li>Sitasi Permenkes versi diundangkan. <span class="tag nanti">ISI NANTI</span></li>
+      <li>Referensi pembanding laboratorium untuk kekeruhan dan TDS, jika memungkinkan. <span class="tag nanti">ISI NANTI</span></li>
+      <li>Konfirmasi tombol bertipe <em>momentary</em> (kembali sendiri setelah ditekan), sesuai kebutuhan kode. <span class="tag nanti">ISI NANTI</span></li>
+      <li>Cek rentang kapasitas baterai 18650 pada nota (tercatat 2250–2550 mAh; hanya dicatat, tidak dipakai). <span class="tag nanti">ISI NANTI</span></li>
+      <li>Saran pengembangan: LED hijau sebagai penanda LAYAK, atau LED merah berkedip saat <em>standby</em>. <span class="tag usulan">USULAN</span></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Tim</strong> · Perancangan Sistem Biomedis 2 (PSB II) · Teknik Biomedis ITERA</p>
+    <div class="team">
+      <div><b>Rendi Prayoga</b>123430127</div>
+      <div><b>Suci Aulia Rahmi</b>123430092</div>
+      <div><b>Dosen pembimbing</b>Dr. Aldi Herbanu, S.Si.</div>
+    </div>
+    <p>Semua angka di situs ini disalin dari Lembar Acuan Tunggal SWA-BORNE v0.2 (29 Oktober 2026). Bila ada selisih, lembar acuan yang berlaku. Label <span class="tag kunci">TERKUNCI</span> berarti sudah dikonfirmasi tim, <span class="tag usulan">USULAN</span> menunggu persetujuan tim atau dosen, <span class="tag nanti">ISI NANTI</span> menunggu data.</p>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
